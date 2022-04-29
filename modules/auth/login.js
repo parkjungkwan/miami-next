@@ -17,7 +17,7 @@ const headers = {
     Authorization: "JWT fefege..."
 }
 export const initialState = {
-    loginUser: {name:"홍길동"},
+    loginUser: {},
     loginError: null,
     isLoggined: false,
     token: ''
@@ -47,12 +47,8 @@ function* signin(action) {
     try {
         alert(" 8888 ")
         const response = yield call(loginAPI, action.payload)
-        const result = response
-            .data
-            console
-            .log(" ########## ")
+        const result = response.data
         alert('>>>>>>>>' + JSON.stringify(result))
-        console.log(" ########## ")
         yield put({type: LOGIN_SUCCESS, payload: result})
         yield put({type: SAVE_TOKEN, payload: result.token})
         yield put(window.location.href = "/user/profile")
