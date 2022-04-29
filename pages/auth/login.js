@@ -19,6 +19,7 @@ const onChange = e => {
 }
 const onSubmit = e => {
     e.preventDefault()
+    alert('>>')
     dispatch(loginRequest(user))
 }
   return (
