@@ -13,6 +13,9 @@ import MenuItem from '@mui/material/MenuItem';
 import {createSvgIcon} from '@mui/material/utils';
 import { logoutRequest } from '@/modules/auth/login';
 import {useDispatch, connect} from 'react-redux';
+import { useSelector } from 'react-redux';
+
+
 const HomeIcon = createSvgIcon(
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>,
     'Home',
@@ -26,6 +29,8 @@ const basicSettings = {
 };
 
 export function Nav() {
+    const {loginUser} = useSelector(state => state.login)
+
     const dispatch = useDispatch()
     const [imageInfos, setImageInfos] = useState({
         imageUrl: 'https://as2.ftcdn.net/v2/jpg/01/85/61/65/1000_F_185616556_uCc1J5d5GNfRH6ErgP1G' +
@@ -56,7 +61,7 @@ export function Nav() {
     }
 
     useEffect(() => {
-        const loginUser = localStorage.getItem("loginUser")
+      console.log(' 모듈에 저장된 로그인값: '+JSON.stringify(loginUser))
         if (loginUser === null) {
             setUserUrls({
                 subTitles: [
@@ -74,13 +79,13 @@ export function Nav() {
                 subTitles: [
                     "프로필", "정보수정", "회원탈퇴"
                 ],
-                urls: ["/auth/profile", "/auth/modifyUser", "/auth/delUser"]
+                urls: ["/user/profile", "/user/modifyUser", "/auth/delUser"]
             })
             setImageInfos(
                 {imageUrl: 'https://www.w3schools.com/howto/img_avatar.png', imageTitle: 'users'}
             )
         }
-    }, [])
+    }, [loginUser && loginUser.name])
 
     return (
         <AppBar
@@ -89,10 +94,9 @@ export function Nav() {
                 marginBottom: "20px"
             }}>
             <Container maxWidth="xl">
-                <Toolbar disableGutters="disableGutters">
+                <Toolbar >
                     <Typography
                         variant="h6"
-                        noWrap="noWrap"
                         component="div"
                         sx={{
                             mr: 2,
@@ -173,7 +177,6 @@ export function Nav() {
                                 vertical: 'top',
                                 horizontal: 'right'
                             }}
-                            keepMounted="keepMounted"
                             transformOrigin={{
                                 vertical: 'top',
                                 horizontal: 'right'
@@ -192,7 +195,7 @@ export function Nav() {
                             }
                         </Menu>
                     </Box>
-                    <Box >
+                    {loginUser && <Box >
                         <Button
                             onClick={handleLogout}
                             sx={{
@@ -201,7 +204,7 @@ export function Nav() {
                             }}>
                             로그아웃
                         </Button>
-                    </Box>
+                    </Box>}
                 </Toolbar>
             </Container>
         </AppBar>
